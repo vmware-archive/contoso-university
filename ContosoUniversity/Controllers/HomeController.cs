@@ -5,16 +5,19 @@ using System.Web;
 using System.Web.Mvc;
 using ContosoUniversity.DAL;
 using ContosoUniversity.ViewModels;
-
+using NLog;
 
 namespace ContosoUniversity.Controllers
 {
     public class HomeController : Controller
     {
         private SchoolContext db = new SchoolContext();
+        private static Logger logger = LogManager.GetCurrentClassLogger();
 
         public ActionResult Index()
         {
+            logger.Debug("Showing Index");
+
             return View();
         }
 
@@ -38,12 +41,20 @@ namespace ContosoUniversity.Controllers
 
             return View(data.ToList());
         }
+
         public ActionResult Contact()
         {
             ViewBag.Message = "Your contact page.";
 
             return View();
         }
+
+		public ActionResult Error()
+		{
+			ViewBag.Message = "An error has occurred.";
+
+			return View();
+		}
 
         protected override void Dispose(bool disposing)
         {
