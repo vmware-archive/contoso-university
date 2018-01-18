@@ -1,4 +1,6 @@
 ﻿using ContosoUniversity.Models;
+using System;
+using System.Configuration;
 using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration.Conventions;
 
@@ -6,6 +8,18 @@ namespace ContosoUniversity.DAL
 {
     public class SchoolContext : DbContext
     {
+        public SchoolContext()
+        {
+            var connectionString = CloudSqlConnection.ConnectionString;
+
+            if (connectionString == String.Empty)
+            {
+                connectionString = ConfigurationManager.ConnectionStrings["SchoolContext"].ConnectionString;
+            }
+
+            this.Database.Connection.ConnectionString = connectionString;
+        }
+
         public DbSet<Course> Courses { get; set; }
         public DbSet<Department> Departments { get; set; }
         public DbSet<Enrollment> Enrollments { get; set; }
